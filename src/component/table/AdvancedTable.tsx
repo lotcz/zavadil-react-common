@@ -3,6 +3,7 @@ import React, {PropsWithChildren} from 'react';
 import {Pagination, Table} from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
 import {TableHeader} from "./TableHeader";
+import {homedir} from "node:os";
 
 const MAX_DISPLAY_PAGES = 10;
 
@@ -11,10 +12,12 @@ export type AdvancedTableProps = {
 	paging: PagingRequest;
 	totalPages: number;
 	totalItems: number;
+	hover?: boolean;
+	striped?: boolean;
 	onPagingChanged: (p: PagingRequest) => any
 };
 
-export function AdvancedTable({header, children, paging, totalPages, totalItems, onPagingChanged}: PropsWithChildren<AdvancedTableProps>) {
+export function AdvancedTable({hover, striped, header, children, paging, totalPages, totalItems, onPagingChanged}: PropsWithChildren<AdvancedTableProps>) {
 
 	const sortingChanged = (e: React.MouseEvent<HTMLTableCellElement>, fieldName: string) => {
 		if (!paging.sorting) paging.sorting = [];
@@ -79,7 +82,7 @@ export function AdvancedTable({header, children, paging, totalPages, totalItems,
 		paginationItems.push(<Pagination.Last key="last" onClick={() => pageChanged(totalPages - 1)} disabled={paging.page === (totalPages - 1)}/>);
 	}
 
-	const pagination = <div className="mb-3 d-flex justify-content-between align-items-center">
+	const pagination = <div className="d-flex justify-content-between align-items-center">
 		<div>Page: {paging.page + 1} / {totalPages}</div>
 		<Pagination size="sm" className="flex-wrap">{paginationItems}</Pagination>
 		<div>Total Items: {totalItems}</div>
@@ -87,9 +90,11 @@ export function AdvancedTable({header, children, paging, totalPages, totalItems,
 
 	return (
 		<div>
-			{pagination}
-			<Table responsive bordered>
+			<Table hover={hover} striped={striped} responsive bordered>
 				<thead>
+				<tr>
+					<td colSpan={header.length}>{pagination}</td>
+				</tr>
 				<tr>
 					{
 						header.map(
@@ -118,8 +123,12 @@ export function AdvancedTable({header, children, paging, totalPages, totalItems,
 				<tbody>
 				{children}
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colSpan={header.length}>{pagination}</td>
+					</tr>
+				</tfoot>
 			</Table>
-			{pagination}
 		</div>
 	);
 }
