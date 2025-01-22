@@ -3,21 +3,21 @@ import React, {PropsWithChildren} from 'react';
 import {Pagination, Table} from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
 import {TableHeader} from "./TableHeader";
-import {homedir} from "node:os";
 
 const MAX_DISPLAY_PAGES = 10;
 
 export type AdvancedTableProps = {
 	header: TableHeader;
 	paging: PagingRequest;
-	totalPages: number;
 	totalItems: number;
 	hover?: boolean;
 	striped?: boolean;
 	onPagingChanged: (p: PagingRequest) => any
 };
 
-export function AdvancedTable({hover, striped, header, children, paging, totalPages, totalItems, onPagingChanged}: PropsWithChildren<AdvancedTableProps>) {
+export function AdvancedTable({hover, striped, header, children, paging, totalItems, onPagingChanged}: PropsWithChildren<AdvancedTableProps>) {
+
+	const totalPages = Math.ceil(totalItems / paging.size);
 
 	const sortingChanged = (e: React.MouseEvent<HTMLTableCellElement>, fieldName: string) => {
 		if (!paging.sorting) paging.sorting = [];
