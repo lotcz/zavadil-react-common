@@ -1,5 +1,6 @@
 import {DateUtil, UserAlert} from 'zavadil-ts-common';
-import {Alert, Stack} from "react-bootstrap";
+import {Stack} from "react-bootstrap";
+import UserAlertTypeIcon from "./UserAlertTypeIcon";
 
 export type UserAlertWidgetProps = {
 	userAlert: UserAlert;
@@ -7,11 +8,10 @@ export type UserAlertWidgetProps = {
 
 export function UserAlertWidget({userAlert}: UserAlertWidgetProps) {
 	return (
-		<Stack direction="horizontal">
-			<span>{DateUtil.formatDateForHumans(userAlert.time)}</span>
-			<Alert variant={userAlert.type}>
-				{userAlert.message}
-			</Alert>
+		<Stack direction="horizontal" gap={2} className="align-items-center">
+			<div>{DateUtil.formatDateForHumans(userAlert.time)}</div>
+			<UserAlertTypeIcon type={userAlert.type}/>
+			<div>{userAlert.message}</div>
 		</Stack>
 	);
 }
