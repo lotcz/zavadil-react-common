@@ -34,7 +34,7 @@ export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 				isOpen && (
 					<div className="max-w-50 p-2 border-bottom">
 						{
-							renderedAlerts.map((a) => <UserAlertWidget userAlert={a}/>)
+							renderedAlerts.map((a, index) => <UserAlertWidget key={index} userAlert={a}/>)
 						}
 						<Button size="sm" variant="primary" onClick={() => userAlerts.reset()}>Clear</Button>
 					</div>
@@ -45,8 +45,8 @@ export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 					<Form.Switch onChange={() => setIsOpen(!isOpen)} checked={isOpen} disabled={renderedAlerts.length === 0}/>
 					{
 						Array.from(summary.entries()).map(
-							(entry) => (
-								<Stack direction="horizontal" gap={1} className="px-1 border rounded align-items-center">
+							(entry, index) => (
+								<Stack key={index} direction="horizontal" gap={1} className="px-1 border rounded align-items-center">
 									<UserAlertTypeIcon type={entry[0]} customVariant={entry[1] === 0 ? 'muted' : undefined}/>
 									<div className={entry[1] > 0 ? `text-${entry[0]} fw-bold` : 'text-muted'}>
 										{entry[1]}
