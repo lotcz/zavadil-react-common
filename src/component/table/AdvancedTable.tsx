@@ -106,6 +106,7 @@ export function AdvancedTable({hover, striped, header, children, paging, totalIt
 								return (
 									<th
 										key={index}
+										className="user-select-none"
 										role="button"
 										onClick={(e: React.MouseEvent<HTMLTableCellElement>) => sortingChanged(e, h.name)}
 									>
@@ -124,9 +125,9 @@ export function AdvancedTable({hover, striped, header, children, paging, totalIt
 				{children}
 				</tbody>
 				<tfoot>
-					<tr>
-						<td colSpan={header.length}>{pagination}</td>
-					</tr>
+				<tr>
+					<td colSpan={header.length}>{pagination}</td>
+				</tr>
 				</tfoot>
 			</Table>
 		</div>
