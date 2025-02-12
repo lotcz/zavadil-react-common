@@ -11,9 +11,7 @@ const STATE_COLORS = new Map<string, string>([
 	['Loading', 'warn'],
 ]);
 
-function QueueStateControl({state}: QueueStateControlProps) {
+export function QueueStateControl({state}: QueueStateControlProps) {
 	const color = STATE_COLORS.get(state) || 'primary';
 	return <Badge className={`bg-${color} text-white`}>{state}</Badge>
 }
-
-export default QueueStateControl;

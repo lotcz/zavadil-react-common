@@ -1,14 +1,14 @@
 import React from 'react';
 import {ProgressBar} from "react-bootstrap";
 import {QueueStats} from 'zavadil-ts-common';
-import QueueStateControl from "./QueueStateControl";
+import {QueueStateControl} from "./QueueStateControl";
 
 export type QueueStatsControlProps = {
 	name: string;
 	stats: QueueStats;
 }
 
-function QueueStatsControl({name, stats}: QueueStatsControlProps) {
+export function QueueStatsControl({name, stats}: QueueStatsControlProps) {
 	return (
 		<div className="d-flex align-items-center gap-2">
 			<pre>{name}</pre>
@@ -24,5 +24,3 @@ function QueueStatsControl({name, stats}: QueueStatsControlProps) {
 		</div>
 	);
 }
-
-export default QueueStatsControl;

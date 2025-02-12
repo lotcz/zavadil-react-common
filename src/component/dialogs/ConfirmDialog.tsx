@@ -1,5 +1,6 @@
 import {Button, Modal, Stack} from "react-bootstrap";
 import {BasicDialogProps} from "./DialogProps";
+import {createContext} from "react";
 
 export class ConfirmDialogContextData {
 	setProps: (props?: ConfirmDialogProps) => any;
@@ -23,9 +24,7 @@ export class ConfirmDialogContextData {
 	}
 }
 
-/*
 export const ConfirmDialogContext = createContext<ConfirmDialogContextData>(new ConfirmDialogContextData(() => undefined));
-*/
 
 export type ConfirmDialogProps = BasicDialogProps & {
 	onConfirm: () => any;

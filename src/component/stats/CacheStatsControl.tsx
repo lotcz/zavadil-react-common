@@ -7,7 +7,7 @@ export type CacheStatsControlProps = {
 	stats: CacheStats;
 }
 
-function CacheStatsControl({name, stats}: CacheStatsControlProps) {
+export function CacheStatsControl({name, stats}: CacheStatsControlProps) {
 	return (
 		<div className="d-flex align-items-center gap-2">
 			<pre>{name}</pre>
@@ -22,5 +22,3 @@ function CacheStatsControl({name, stats}: CacheStatsControlProps) {
 		</div>
 	);
 }
-
-export default CacheStatsControl;

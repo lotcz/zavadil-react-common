@@ -6,7 +6,7 @@ export type WorkerJavaHeapControlProps = {
 	stats: JavaHeapStats;
 };
 
-function JavaHeapControl({stats}: WorkerJavaHeapControlProps) {
+export function JavaHeapControl({stats}: WorkerJavaHeapControlProps) {
 	const size = stats.heapSize;
 	const max = stats.heapMaxSize;
 	const free = stats.heapFreeSize;
@@ -33,5 +33,3 @@ function JavaHeapControl({stats}: WorkerJavaHeapControlProps) {
 		</div>
 	);
 }
-
-export default JavaHeapControl;
