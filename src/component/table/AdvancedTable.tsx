@@ -82,9 +82,9 @@ export function AdvancedTable({hover, striped, header, children, paging, totalIt
 		paginationItems.push(<Pagination.Last key="last" onClick={() => pageChanged(totalPages - 1)} disabled={paging.page === (totalPages - 1)}/>);
 	}
 
-	const pagination = <div className="d-flex justify-content-between align-items-center">
+	const pagination = <div className="d-flex justify-content-between align-items-center gap-2">
 		<div>Page: {paging.page + 1} / {totalPages}</div>
-		<Pagination size="sm" className="flex-wrap">{paginationItems}</Pagination>
+		<Pagination size="sm" className="flex-wrap m-0">{paginationItems}</Pagination>
 		<div>Total Items: {totalItems}</div>
 	</div>;
 

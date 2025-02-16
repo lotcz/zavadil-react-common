@@ -9,17 +9,18 @@ export type QueueStatsControlProps = {
 }
 
 export function QueueStatsControl({name, stats}: QueueStatsControlProps) {
+	const max = stats.remaining + stats.processed;
 	return (
 		<div className="d-flex align-items-center gap-2">
 			<pre>{name}</pre>
-			<pre>[{stats.loaded} / {stats.remaining}]</pre>
+			<pre>[{stats.processed} / {max}]{stats.loaded > 0 ? ` (${stats.loaded} loaded)` : ''}</pre>
 			<QueueStateControl state={stats.state}/>
 			<div className="flex-grow-1">
-				<ProgressBar
-					now={stats.loaded}
-					min={0}
-					max={stats.remaining > 0 ? stats.remaining : 1}
-				/>
+				<ProgressBar min={0} max={max}>
+					<ProgressBar variant="warning" min={0} now={stats.processed} max={max}/>
+					<ProgressBar variant="success" min={0} now={stats.loaded} max={max}/>
+				</ProgressBar>
+
 			</div>
 		</div>
 	);
