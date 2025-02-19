@@ -8,6 +8,7 @@ export type CacheStatsControlProps = {
 }
 
 export function CacheStatsControl({name, stats}: CacheStatsControlProps) {
+	const isEmpty = stats.cachedItems === 0 && stats.capacity === 0;
 	return (
 		<div className="d-flex align-items-center gap-2">
 			<pre>{name}</pre>
@@ -16,7 +17,7 @@ export function CacheStatsControl({name, stats}: CacheStatsControlProps) {
 				<ProgressBar
 					now={stats.cachedItems}
 					min={0}
-					max={stats.capacity}
+					max={isEmpty ? 1 : stats.capacity}
 				/>
 			</div>
 		</div>
