@@ -9,9 +9,10 @@ export type LookupSelectProps = {
 	showEmptyOption?: boolean;
 	emptyOptionLabel?: string;
 	sort?: boolean;
+	labelGetter?: <T extends LookupTableEntity>(item: T) => string;
 }
 
-export function LookupSelect({id, sort, onChange, options, showEmptyOption, emptyOptionLabel}: LookupSelectProps) {
+export function LookupSelect({id, sort, labelGetter, onChange, options, showEmptyOption, emptyOptionLabel}: LookupSelectProps) {
 	const lOptions: GenericSelectOption<number>[] = useMemo(
 		() => {
 			let result: Array<LookupTableEntity> = []
@@ -23,7 +24,7 @@ export function LookupSelect({id, sort, onChange, options, showEmptyOption, empt
 					(o) => {
 						return {
 							id: o.id,
-							label: o.name
+							label: labelGetter ? labelGetter(o) : o.name
 						}
 					}
 				);

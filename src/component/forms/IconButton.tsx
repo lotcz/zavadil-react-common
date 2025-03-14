@@ -12,9 +12,9 @@ export function IconButton({disabled, icon, size, children, onClick}: PropsWithC
 	return (
 		<Button disabled={disabled === true} size={size} onClick={onClick}>
 			{
-				(icon) ? <div className="d-flex align-items-center gap-1">
+				(icon) ? <div className="d-flex align-items-center gap-2">
 						{icon}
-						{children}
+						<div>{children}</div>
 					</div>
 					: children
 			}
