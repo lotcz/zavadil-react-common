@@ -4,14 +4,14 @@ import {LookupTableEntity} from "zavadil-ts-common/dist/type/Entity";
 
 export type LookupSelectProps = {
 	id?: number | null;
-	onChange: (n: number | null) => any;
+	onChange: (n: number | null | undefined) => any;
 	options?: Array<LookupTableEntity> | null;
 	showEmptyOption?: boolean;
 	emptyOptionLabel?: string;
 	sort?: boolean;
 }
 
-export default function LookupSelect({id, sort, onChange, options, showEmptyOption, emptyOptionLabel}: LookupSelectProps) {
+export function LookupSelect({id, sort, onChange, options, showEmptyOption, emptyOptionLabel}: LookupSelectProps) {
 	const lOptions: GenericSelectOption<number>[] = useMemo(
 		() => {
 			let result: Array<LookupTableEntity> = []
