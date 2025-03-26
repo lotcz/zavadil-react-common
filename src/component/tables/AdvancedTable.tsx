@@ -46,6 +46,7 @@ export type AdvancedTableProps = {
 	totalItems: number;
 	hover?: boolean;
 	striped?: boolean;
+	bordered?: boolean;
 	onPagingChanged: (p: PagingRequest) => any
 };
 
@@ -53,6 +54,7 @@ export function AdvancedTable({
 	language,
 	hover,
 	striped,
+	bordered,
 	header,
 	children,
 	paging,
@@ -145,7 +147,7 @@ export function AdvancedTable({
 
 	return (
 		<div>
-			<Table hover={hover} striped={striped} responsive bordered>
+			<Table hover={hover} striped={striped} responsive bordered={bordered}>
 				<thead>
 				<tr>
 					<td colSpan={header.length}>{pagination}</td>

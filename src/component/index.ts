@@ -3,3 +3,4 @@ export * from './forms';
 export * from './alerts';
 export * from './dialogs';
 export * from './stats';
+export * from './Spread';

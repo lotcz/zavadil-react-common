@@ -8,8 +8,8 @@ export type ActiveButtonProps = IconButtonProps & {
 
 export function LoadingButton({disabled, icon, loading, children, size, onClick}: PropsWithChildren<ActiveButtonProps>) {
 	return (
-		(loading === true) ? <IconButton disabled={true} onClick={onClick} icon={<Spinner size={size}/>}>{children}</IconButton>
-			: <IconButton disabled={disabled} onClick={onClick} icon={icon}>{children}</IconButton>
+		(loading === true) ? <IconButton disabled={true} onClick={onClick} size={size} icon={<Spinner size={size}/>}>{children}</IconButton>
+			: <IconButton disabled={disabled} onClick={onClick} icon={icon} size={size}>{children}</IconButton>
 	);
 }
 
