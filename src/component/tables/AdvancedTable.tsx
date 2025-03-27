@@ -1,11 +1,11 @@
 import {ObjectUtil, PagingRequest} from 'zavadil-ts-common';
 import React, {PropsWithChildren, useMemo} from 'react';
-import {Pagination, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
 import {TableHeader} from "./TableHeader";
 import {NumberSelect} from "../forms";
-
-const MAX_DISPLAY_PAGES = 10;
+import Localize from "../localization/Localize";
+import TablePagination from "./TablePagination";
 
 const DEFAULT_SIZES = [
 	{
@@ -22,23 +22,6 @@ const DEFAULT_SIZES = [
 	}
 ];
 
-const LANG_STRINGS_CS = new Map<string, string>();
-LANG_STRINGS_CS.set("Page", "Stránka");
-LANG_STRINGS_CS.set("Page size", "Velikost stránky");
-LANG_STRINGS_CS.set("Total items", "Celkem záznamů");
-
-const LANGUAGES = new Map<string, Map<string, string>>();
-LANGUAGES.set("cs", LANG_STRINGS_CS);
-
-function t(l: string | undefined, en: string): string {
-	if (!l) return en;
-	const lang = LANGUAGES.get(l);
-	if (!lang) return en;
-	const tran = lang.get(en);
-	if (!tran) return en;
-	return tran;
-}
-
 export type AdvancedTableProps = {
 	header: TableHeader;
 	language?: "cs" | "en";
@@ -51,7 +34,6 @@ export type AdvancedTableProps = {
 };
 
 export function AdvancedTable({
-	language,
 	hover,
 	striped,
 	bordered,
@@ -92,65 +74,18 @@ export function AdvancedTable({
 		onPagingChanged(ObjectUtil.clone(paging));
 	}
 
-	const pageChanged = (page: number) => {
-		paging.page = page;
-		onPagingChanged(ObjectUtil.clone(paging));
-	}
-
-	const paginationItems = [];
-	if (totalPages > 1) {
-		paginationItems.push(<Pagination.First key="first" onClick={() => pageChanged(0)} disabled={paging.page === 0}/>);
-		paginationItems.push(<Pagination.Prev key="prev" onClick={() => pageChanged(paging.page - 1)} disabled={paging.page === 0}/>);
-
-		let start = 0;
-		let end = totalPages - 1;
-
-		if (paging.page >= MAX_DISPLAY_PAGES) {
-			const maxPagesSide = Math.round((MAX_DISPLAY_PAGES - 3) / 2);
-			start = paging.page - maxPagesSide;
-		}
-
-		if (start > (totalPages - MAX_DISPLAY_PAGES)) {
-			start = totalPages - MAX_DISPLAY_PAGES;
-		}
-
-		end = start + MAX_DISPLAY_PAGES;
-
-		if (start < 0) start = 0;
-		if (end >= totalPages) end = totalPages - 1;
-
-		if (start > 0) {
-			paginationItems.push(<Pagination.Ellipsis key="ellipsis"/>);
-		}
-
-		for (let number = start; number <= end; number++) {
-			paginationItems.push(
-				<Pagination.Item key={number} active={number === paging.page} onClick={() => pageChanged(number)}>
-					{number + 1}
-				</Pagination.Item>,
-			);
-		}
-
-		if (end < (totalPages - 1)) {
-			paginationItems.push(<Pagination.Ellipsis key="ellipsis"/>);
-		}
-
-		paginationItems.push(<Pagination.Next key="next" onClick={() => pageChanged(paging.page + 1)} disabled={paging.page === (totalPages - 1)}/>);
-		paginationItems.push(<Pagination.Last key="last" onClick={() => pageChanged(totalPages - 1)} disabled={paging.page === (totalPages - 1)}/>);
-	}
-
-	const pagination = <div className="d-flex justify-content-between align-items-center gap-2">
-		<div>{t(language, 'Page')}: {paging.page + 1} / {totalPages}</div>
-		<Pagination size="sm" className="flex-wrap m-0">{paginationItems}</Pagination>
-		<div>{t(language, 'Total items')}: {totalItems}</div>
-	</div>;
-
 	return (
 		<div>
 			<Table hover={hover} striped={striped} responsive bordered={bordered}>
 				<thead>
 				<tr>
-					<td colSpan={header.length}>{pagination}</td>
+					<td colSpan={header.length}>
+						<div className="d-flex justify-content-between align-items-center gap-2">
+							<div><Localize text='Page'/>: {paging.page + 1} / {totalPages}</div>
+							<TablePagination paging={paging} totalItems={totalItems} onPagingChanged={onPagingChanged}/>
+							<div><Localize text='Total items'/>: {totalItems}</div>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					{
@@ -183,12 +118,18 @@ export function AdvancedTable({
 				</tbody>
 				<tfoot>
 				<tr>
-					<td colSpan={header.length}>{pagination}</td>
+					<td colSpan={header.length}>
+						<div className="d-flex justify-content-between align-items-center gap-2">
+							<div><Localize text='Page'/>: {paging.page + 1} / {totalPages}</div>
+							<TablePagination paging={paging} totalItems={totalItems} onPagingChanged={onPagingChanged}/>
+							<div><Localize text='Total items'/>: {totalItems}</div>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<td colSpan={header.length}>
 						<div className="d-flex align-items-center gap-2 justify-content-end">
-							<div className="text-nowrap">{t(language, 'Page size')}:</div>
+							<div className="text-nowrap"><Localize text='Page size'/>:</div>
 							<div>
 								<NumberSelect
 									value={paging.size}
