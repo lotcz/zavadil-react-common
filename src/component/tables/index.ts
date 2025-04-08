@@ -1,2 +1,4 @@
 export * from './AdvancedTable';
-export * from './TableHeader';
+export * from './TableTypes';
+export * from './TableWithSelect';
+export * from './TablePagination';

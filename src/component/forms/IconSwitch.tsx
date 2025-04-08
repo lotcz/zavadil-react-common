@@ -21,6 +21,7 @@ export function IconSwitch({disabled, checked, iconOn, iconOff, size, onChange}:
 				size={size}
 				type="switch"
 				checked={checked}
+				readOnly={true}
 				className="cursor-pointer"
 			/>
 			{

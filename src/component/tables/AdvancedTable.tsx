@@ -2,7 +2,7 @@ import {ObjectUtil, PagingRequest} from 'zavadil-ts-common';
 import React, {PropsWithChildren, useMemo} from 'react';
 import {Table} from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
-import {TableHeader} from "./TableHeader";
+import {TableHeader} from "./TableTypes";
 import {NumberSelect} from "../forms";
 import Localize from "../localization/Localize";
 import TablePagination from "./TablePagination";
