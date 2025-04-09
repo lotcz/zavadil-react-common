@@ -1,9 +1,9 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {EntityBase} from 'zavadil-ts-common';
 import {AdvancedTable, AdvancedTableProps} from "./AdvancedTable";
 import {SelectableTableHeader, TableHeader} from "./TableTypes";
-import {IconSwitch} from "../forms";
-import {BsCheck, BsCheckAll, BsCheckCircle} from "react-icons/bs";
+import {BsCheckAll} from "react-icons/bs";
+import IconCheck from "../forms/IconCheck";
 
 export type SelectableItem<T extends EntityBase> = {
 	selected: boolean;
@@ -15,75 +15,117 @@ export type TableWithSelectProps<T extends EntityBase> = Omit<AdvancedTableProps
 	header: SelectableTableHeader<T>;
 	items?: Array<T>;
 	onSelect?: (selected: Array<T>) => any;
+	onClick?: (selected: T) => any;
 };
 
-export function TableWithSelect<T extends EntityBase>(props: TableWithSelectProps<T>) {
+export function TableWithSelect<T extends EntityBase>({
+	showSelect,
+	header,
+	items,
+	onSelect,
+	onClick,
+	totalItems,
+	paging,
+	onPagingChanged
+}: TableWithSelectProps<T>) {
 	const [selectAll, setSelectAll] = useState<boolean>(false);
-	const [items, setItems] = useState<Array<SelectableItem<T>>>();
+	const [selectableItems, setSelectableItems] = useState<Array<SelectableItem<T>>>();
 
-	const header = useMemo(
+	const updateSelectAll = useCallback(
+		(sa: boolean) => {
+			if (selectableItems) {
+				setSelectableItems(selectableItems.map(
+					(i) => {
+						return {selected: sa, item: i.item};
+					}
+				));
+			}
+			setSelectAll(sa);
+		},
+		[selectableItems]
+	);
+
+	const selectableHeader = useMemo(
 		() => {
-			const h: TableHeader = [...props.header];
-			h.unshift(
-				{
-					name: '',
-					label: <IconSwitch
-						checked={selectAll}
-						onChange={() => setSelectAll(!selectAll)}
-						iconOn={<BsCheckAll/>}
-						iconOff={<BsCheck className="text-muted"/>}
-					/>
-				}
-			);
+			const h: TableHeader = [...header];
+			if (showSelect !== false) {
+				h.unshift(
+					{
+						name: '',
+						label: <IconCheck
+							checked={selectAll}
+							onChange={
+								() => updateSelectAll(!selectAll)
+							}
+							iconOn={<BsCheckAll/>}
+						/>
+					}
+				);
+			}
 			return h;
 		},
-		[props, selectAll]
+		[header, selectAll, updateSelectAll]
 	);
 
 	useEffect(
 		() => {
-			setItems(props.items ? props.items.map(
+			setSelectableItems(items ? items.map(
 				(i) => {
 					return {selected: selectAll, item: i};
 				}
 			) : undefined);
 		},
-		[props, selectAll]
+		[items]
 	);
 
 	useEffect(
 		() => {
-			if (!items) return;
-			if (!props.onSelect) return;
-			props.onSelect(items.filter((i) => i.selected).map((i) => i.item));
+			if (!selectableItems) return;
+			if (!onSelect) return;
+			onSelect(selectableItems.filter((i) => i.selected).map((i) => i.item));
 		},
-		[items]
+		[selectableItems, onSelect]
 	);
 
 	return <AdvancedTable
-		header={header}
-		paging={props.paging}
-		totalItems={props.totalItems}
-		onPagingChanged={props.onPagingChanged}
+		header={selectableHeader}
+		hover={onClick !== undefined}
+		paging={paging}
+		striped={true}
+		totalItems={totalItems}
+		onPagingChanged={onPagingChanged}
 	>
 		{
-			items && items.map(
-				(item, index) => <tr key={index}>
-					<td>
-						<IconSwitch
-							checked={item.selected}
-							onChange={
-								() => {
-									item.selected = !item.selected;
-									setItems([...items]);
-								}
-							}
-							iconOn={<BsCheckCircle/>}
-							iconOff={<BsCheck className="text-muted"/>}
-						/>
-					</td>
+			selectableItems && selectableItems.map(
+				(item, index) => <tr
+					key={index}
+					className={`selectable ${onClick ? 'cursor-pointer' : ''} ${item.selected ? 'selected' : ''}`}
+					onClick={
+						(e) => {
+							if (onClick) onClick(item.item);
+						}
+					}
+				>
 					{
-						props.header.map(
+						(showSelect !== false) && <td>
+							<div className="py-2 d-flex align-items-center">
+								<IconCheck
+									checked={item.selected}
+									onChange={
+										() => {
+											item.selected = !item.selected;
+											if (selectAll && !item.selected) {
+												setSelectAll(false);
+											}
+											setSelectableItems([...selectableItems]);
+										}
+									}
+								/>
+							</div>
+						</td>
+					}
+					{
+						header.map(
 							(h, index) => <td key={index}>{h.renderer(item.item)}</td>
 						)
 					}
