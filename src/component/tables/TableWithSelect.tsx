@@ -99,7 +99,7 @@ export function TableWithSelect<T extends EntityBase>({
 			selectableItems && selectableItems.map(
 				(item, index) => <tr
 					key={index}
-					className={`selectable ${onClick ? 'cursor-pointer' : ''} ${item.selected ? 'selected' : ''}`}
+					className={`selectable ${onClick ? 'cursor-pointer' : ''} ${item.selected ? 'table-active table-primary' : ''}`}
 					onClick={
 						(e) => {
 							if (onClick) onClick(item.item);

@@ -2,7 +2,7 @@ import {UserAlert, UserAlerts, UserAlertType} from 'zavadil-ts-common';
 import {useEffect, useState} from "react";
 import UserAlertWidget from "./UserAlertWidget";
 import UserAlertTypeIcon from "./UserAlertTypeIcon";
-import {Button, Form, Stack} from "react-bootstrap";
+import {Button, Stack} from "react-bootstrap";
 
 export type UserAlertsWidgetProps = {
 	userAlerts: UserAlerts;
@@ -11,38 +11,26 @@ export type UserAlertsWidgetProps = {
 export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 	const [renderedAlerts, setRenderedAlerts] = useState<UserAlert[]>([...userAlerts.alerts]);
 	const [summary, setSummary] = useState<Map<UserAlertType, number>>(userAlerts.getSummary());
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		userAlerts.addOnChangeHandler(() => {
 			setRenderedAlerts([...userAlerts.alerts]);
 			setSummary(userAlerts.getSummary());
-			if (userAlerts.alerts.length > 0) {
-				const lastMessage = userAlerts.alerts[userAlerts.alerts.length - 1];
-				if (lastMessage.type === UserAlertType.error) {
-					setIsOpen(true);
-				}
-			} else {
-				setIsOpen(false);
-			}
 		});
 	}, [userAlerts]);
 
 	return (
 		<div className="user-alerts border rounded bg-body text-body position-fixed text-end" style={{bottom: 15, right: 15}}>
 			{
-				isOpen && (
-					<div className="max-w-50 p-2 border-bottom">
-						{
-							renderedAlerts.map((a, index) => <UserAlertWidget key={index} userAlert={a}/>)
-						}
-						<Button size="sm" variant="primary" onClick={() => userAlerts.reset()}>Clear</Button>
-					</div>
-				)
+				<div className="max-w-50 p-2 border-bottom">
+					{
+						renderedAlerts.map((a, index) => <UserAlertWidget key={index} userAlert={a}/>)
+					}
+				</div>
 			}
 			<div className="p-2">
 				<Stack direction="horizontal" gap={2} className="justify-content-end align-items-center">
-					<Form.Switch onChange={() => setIsOpen(!isOpen)} checked={isOpen} disabled={renderedAlerts.length === 0}/>
+					<Button size="sm" variant="primary" onClick={() => userAlerts.reset()}>Clear</Button>
 					{
 						Array.from(summary.entries()).map(
 							(entry, index) => (
