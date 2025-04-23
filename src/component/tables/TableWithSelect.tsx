@@ -52,13 +52,15 @@ export function TableWithSelect<T extends EntityBase>({
 				h.unshift(
 					{
 						name: '',
-						label: <IconCheck
-							checked={selectAll}
-							onChange={
-								() => updateSelectAll(!selectAll)
-							}
-							iconOn={<BsCheckAll/>}
-						/>
+						label: <div className="py-1">
+							<IconCheck
+								checked={selectAll}
+								onChange={
+									() => updateSelectAll(!selectAll)
+								}
+								iconOn={<BsCheckAll/>}
+							/>
+						</div>
 					}
 				);
 			}
