@@ -23,29 +23,22 @@ export function TablePagination({
 	}
 
 	const paginationItems = [];
+
 	if (totalPages > 1) {
 		paginationItems.push(<Pagination.First key="first" onClick={() => pageChanged(0)} disabled={paging.page === 0}/>);
 		paginationItems.push(<Pagination.Prev key="prev" onClick={() => pageChanged(paging.page - 1)} disabled={paging.page === 0}/>);
 
-		let start = 0;
-		let end = totalPages - 1;
+		const maxPagesSide = Math.round((MAX_DISPLAY_PAGES - 3) / 2);
 
-		if (paging.page >= MAX_DISPLAY_PAGES) {
-			const maxPagesSide = Math.round((MAX_DISPLAY_PAGES - 3) / 2);
-			start = paging.page - maxPagesSide;
+		let start = (paging.page > maxPagesSide) ? paging.page - maxPagesSide : 0;
+		let end = start + MAX_DISPLAY_PAGES;
+
+		if (end >= totalPages) {
+			end = totalPages - 1;
 		}
-
-		if (start > (totalPages - MAX_DISPLAY_PAGES)) {
-			start = totalPages - MAX_DISPLAY_PAGES;
-		}
-
-		end = start + MAX_DISPLAY_PAGES;
-
-		if (start < 0) start = 0;
-		if (end >= totalPages) end = totalPages - 1;
 
 		if (start > 0) {
-			paginationItems.push(<Pagination.Ellipsis key="ellipsis"/>);
+			paginationItems.push(<Pagination.Ellipsis key="ellipsisStart" disabled={true}/>);
 		}
 
 		for (let number = start; number <= end; number++) {
@@ -57,7 +50,7 @@ export function TablePagination({
 		}
 
 		if (end < (totalPages - 1)) {
-			paginationItems.push(<Pagination.Ellipsis key="ellipsis"/>);
+			paginationItems.push(<Pagination.Ellipsis key="ellipsisEnd" disabled={true}/>);
 		}
 
 		paginationItems.push(<Pagination.Next key="next" onClick={() => pageChanged(paging.page + 1)} disabled={paging.page === (totalPages - 1)}/>);

@@ -99,7 +99,7 @@ export function AdvancedTable({
 								return (
 									<th
 										key={index}
-										className="user-select-none"
+										className="user-select-none text-nowrap"
 										role="button"
 										onClick={(e: React.MouseEvent<HTMLTableCellElement>) => sortingChanged(e, sortBy)}
 									>
