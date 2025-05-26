@@ -18,7 +18,7 @@ export function SaveButton({disabled, icon, loading, children, size, onClick, is
 
 	return (
 		<LoadingButton
-			disabled={disabled || !isChanged}
+			disabled={disabled || (isChanged === false)}
 			onClick={onClick}
 			icon={icn}
 			loading={loading}

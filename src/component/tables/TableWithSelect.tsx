@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {EntityBase} from 'zavadil-ts-common';
+import {EntityBase, ObjectUtil} from 'zavadil-ts-common';
 import {AdvancedTable, AdvancedTableProps} from "./AdvancedTable";
-import {SelectableTableHeader, TableHeader} from "./TableTypes";
+import {RenderFunc, SelectableTableHeader, TableHeader} from "./TableTypes";
 import {BsCheckAll} from "react-icons/bs";
 import IconCheck from "../forms/IconCheck";
 
@@ -17,6 +17,10 @@ export type TableWithSelectProps<T extends EntityBase> = Omit<AdvancedTableProps
 	onSelect?: (selected: Array<T>) => any;
 	onClick?: (selected: T) => any;
 };
+
+function createRenderer<T>(name: string): RenderFunc<T> {
+	return (e: T) => ObjectUtil.getNestedValue(e, name);
+}
 
 export function TableWithSelect<T extends EntityBase>({
 	showSelect,
@@ -128,7 +132,10 @@ export function TableWithSelect<T extends EntityBase>({
 					}
 					{
 						header.map(
-							(h, index) => <td key={index}>{h.renderer(item.item)}</td>
+							(h, index) => {
+								const renderer = h.renderer || createRenderer(h.name);
+								return <td key={index}>{renderer(item.item)}</td>
+							}
 						)
 					}
 				</tr>

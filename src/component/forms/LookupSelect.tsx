@@ -1,6 +1,7 @@
 import {useMemo} from "react";
-import {GenericSelectOption, NumberSelect} from "./Select";
-import {LookupTableEntity} from "zavadil-ts-common/dist/type/Entity";
+import {NumberSelect} from "./NumberSelect";
+import {LookupTableEntity} from "zavadil-ts-common";
+import {GenericSelectOption} from "./StringSelect";
 
 export type LookupSelectProps = {
 	id?: number | null;

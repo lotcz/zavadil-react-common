@@ -4,5 +4,7 @@ export * from './IconSwitch';
 export * from './LoadingButton';
 export * from './SaveButton';
 export * from './LookupSelect';
-export * from './Select';
+export * from './NumberSelect';
+export * from './StringSelect';
+export * from './EnumSelect';
 export * from './Switch';

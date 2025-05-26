@@ -1,4 +1,4 @@
-import {ObjectUtil, PagingRequest} from 'zavadil-ts-common';
+import {ObjectUtil, PagingRequest, StringUtil} from 'zavadil-ts-common';
 import React, {PropsWithChildren, useMemo} from 'react';
 import {Table} from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
@@ -91,16 +91,17 @@ export function AdvancedTable({
 					{
 						header.map(
 							(h, index) => {
-								if (h.name === '') {
+								const sortBy = h.sort === false ? '' : (StringUtil.isBlank(h.sort) ? h.name : h.sort);
+								if (StringUtil.isBlank(sortBy) || (!sortBy)) {
 									return <th key={index}>{h.label}</th>
 								}
-								const field = paging.sorting && paging.sorting.find((s) => s.name === h.name);
+								const field = paging.sorting && paging.sorting.find((s) => s.name === sortBy);
 								return (
 									<th
 										key={index}
 										className="user-select-none"
 										role="button"
-										onClick={(e: React.MouseEvent<HTMLTableCellElement>) => sortingChanged(e, h.name)}
+										onClick={(e: React.MouseEvent<HTMLTableCellElement>) => sortingChanged(e, sortBy)}
 									>
 										{h.label}
 										{

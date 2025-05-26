@@ -13,12 +13,12 @@ export function QueueStatsControl({name, stats}: QueueStatsControlProps) {
 	return (
 		<div className="d-flex align-items-center gap-2">
 			<pre>{name}</pre>
-			<pre>[{stats.processed} / {max}]{stats.loaded > 0 ? ` (${stats.loaded} loaded)` : ''}</pre>
+			<pre>[{stats.processed} / {max}]</pre>
 			<QueueStateControl state={stats.state}/>
 			<div className="flex-grow-1">
-				<ProgressBar min={0} max={max}>
-					<ProgressBar variant="warning" min={0} now={stats.processed} max={max}/>
-					<ProgressBar variant="success" min={0} now={stats.loaded} max={max}/>
+				<ProgressBar min={0} max={max || 1}>
+					<ProgressBar variant="success" min={0} now={stats.processed} max={max || 1}/>
+					<ProgressBar variant="danger" min={0} now={stats.loaded} max={max || 1}/>
 				</ProgressBar>
 
 			</div>
