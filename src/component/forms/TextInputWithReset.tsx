@@ -7,30 +7,43 @@ export type TextInputWithResetProps = {
 	value?: string | null;
 	onChange: (s: string) => any;
 	onReset?: () => any;
+	disabled?: boolean;
+	onBlur?: () => any;
+	className?: string;
 };
 
-export function TextInputWithReset({value, onChange, onReset}: TextInputWithResetProps) {
+export function TextInputWithReset({value, onChange, onReset, onBlur, disabled, className}: TextInputWithResetProps) {
 	const actual = useMemo(
 		() => StringUtil.getNonEmpty(value),
 		[value]
 	);
 
+	const isEmpty = useMemo(
+		() => StringUtil.isBlank(value),
+		[actual]
+	);
+
 	const reset = useCallback(
 		() => {
-			onChange('');
-			if (onReset) onReset();
+			if (onReset) {
+				onReset();
+			} else {
+				onChange('');
+			}
 		},
 		[onReset, onChange]
 	);
 
 	return (
-		<InputGroup>
+		<InputGroup className={className}>
 			<Form.Control
 				type="text"
+				disabled={disabled}
 				value={actual}
 				onChange={(e) => onChange(e.target.value)}
+				onBlur={onBlur}
 			/>
-			<Button onClick={reset}>
+			<Button onClick={reset} disabled={isEmpty}>
 				<div className="d-flex align-items-center">
 					<BsXCircle/>
 				</div>

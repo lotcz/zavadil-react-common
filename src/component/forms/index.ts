@@ -8,3 +8,8 @@ export * from './NumberSelect';
 export * from './StringSelect';
 export * from './EnumSelect';
 export * from './Switch';
+export * from './AutocompleteSelect';
+export * from './AutocompleteEntitySelect';
+export * from './AutocompleteEntityIdSelect';
+export * from './AutocompleteLookupSelect';
+export * from './AutocompleteLookupIdSelect';
