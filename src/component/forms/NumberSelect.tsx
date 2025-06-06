@@ -4,7 +4,7 @@ import {GenericSelectProps, StringSelect} from "./StringSelect";
 
 export type NumberSelectProps = GenericSelectProps<number>;
 
-export function NumberSelect({value, options, onChange, showEmptyOption, emptyOptionLabel}: NumberSelectProps) {
+export function NumberSelect({value, options, disabled, onChange, showEmptyOption, emptyOptionLabel}: NumberSelectProps) {
 	const nValue = useMemo(
 		() => {
 			if (!value) return '';
@@ -35,6 +35,7 @@ export function NumberSelect({value, options, onChange, showEmptyOption, emptyOp
 
 	return (
 		<StringSelect
+			disabled={disabled}
 			value={nValue}
 			options={nOptions}
 			onChange={nChange}

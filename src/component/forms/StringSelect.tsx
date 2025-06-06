@@ -11,12 +11,13 @@ export type GenericSelectProps<T> = {
 	options: Array<GenericSelectOption<T>>;
 	onChange: (id: T | null | undefined) => any;
 	showEmptyOption?: boolean;
+	disabled?: boolean;
 	emptyOptionLabel?: string;
 }
 
 export type StringSelectProps = GenericSelectProps<string>;
 
-export function StringSelect({value, options, onChange, showEmptyOption, emptyOptionLabel}: StringSelectProps) {
+export function StringSelect({value, options, disabled, onChange, showEmptyOption, emptyOptionLabel}: StringSelectProps) {
 	if (StringUtil.isEmpty(value) && options.length > 0 && showEmptyOption !== true) {
 		onChange(options[0].id);
 		return <span>{value} - selecting default {options[0].id}</span>;
@@ -26,6 +27,7 @@ export function StringSelect({value, options, onChange, showEmptyOption, emptyOp
 		<Form.Select
 			value={value || ''}
 			onChange={(e) => onChange(e.target.value)}
+			disabled={disabled}
 		>
 			{
 				(showEmptyOption === true) && (
