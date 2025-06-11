@@ -19,8 +19,10 @@ export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 		});
 	}, [userAlerts]);
 
+	if (renderedAlerts.length === 0) return <></>;
+
 	return (
-		<div className="user-alerts border rounded bg-body text-body position-fixed text-end" style={{bottom: 15, right: 15}}>
+		<div className="user-alerts border rounded bg-body text-body position-fixed text-end" style={{bottom: 15, right: 15, zIndex: 2147483647}}>
 			{
 				<div className="max-w-50 p-2 border-bottom">
 					{
