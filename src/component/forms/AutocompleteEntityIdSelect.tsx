@@ -44,7 +44,7 @@ export function AutocompleteEntityIdSelect<T extends EntityBase, TStub extends E
 			if (nId !== id) onChange(nId);
 			setSelected(s);
 		},
-		[id, selected]
+		[id, onChange]
 	);
 
 	return (

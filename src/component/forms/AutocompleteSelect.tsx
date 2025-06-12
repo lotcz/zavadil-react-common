@@ -31,6 +31,10 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 
 	useEffect(() => {
 		setSearchText(selected ? finalLabelGetter(selected) : '');
+		if (searchPromise) {
+			searchPromise.cancel();
+			setSearchPromise(undefined);
+		}
 		setItemSelection(undefined);
 	}, [selected, finalLabelGetter]);
 
@@ -38,9 +42,13 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 		() => {
 			onChange(null)
 			setSearchText('');
+			if (searchPromise) {
+				searchPromise.cancel();
+				setSearchPromise(undefined);
+			}
 			setItemSelection(undefined);
 		},
-		[]
+		[onChange, searchPromise]
 	);
 
 	const userChangedText = useCallback(
@@ -56,15 +64,26 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 		[searchPromise]
 	);
 
+	const userLeftControl = useCallback(
+		() => {
+			if (itemSelection) {
+				setItemSelection(undefined);
+				setSearchText(selected ? finalLabelGetter(selected) : '');
+			}
+		},
+		[onChange]
+	);
+
 	const userSelectedItem = useCallback(
 		(item: T) => {
+			setItemSelection(undefined);
 			onChange({...item});
 		},
 		[onChange]
 	);
 
 	return (
-		<Dropdown defaultShow={false} show={itemSelection !== null}>
+		<Dropdown defaultShow={false} show={itemSelection !== null} onBlur={userLeftControl}>
 			<TextInputWithReset
 				disabled={disabled}
 				value={searchText}
