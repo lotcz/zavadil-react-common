@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {CancellablePromise, EntityBase} from "zavadil-ts-common";
 import TextInputWithReset from "./TextInputWithReset";
 import {Dropdown} from "react-bootstrap";
@@ -15,9 +15,11 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 	const [searchPromise, setSearchPromise] = useState<CancellablePromise>();
 	const [searchText, setSearchText] = useState<string>();
 	const [itemSelection, setItemSelection] = useState<Array<T>>();
+	const blurTimeout = useRef<number>();
 
-	const finalLabelGetter = useMemo(
-		() => labelGetter ? labelGetter : (item: T) => {
+	const finalLabelGetter = useCallback(
+		(item: T) => {
+			if (labelGetter) return labelGetter(item);
 			if ('name' in item && typeof item.name === 'string') return item.name;
 			return `[${item.id}]`;
 		},
@@ -29,14 +31,52 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 		[selected]
 	);
 
-	useEffect(() => {
-		setSearchText(selected ? finalLabelGetter(selected) : '');
-		if (searchPromise) {
-			searchPromise.cancel();
-			setSearchPromise(undefined);
-		}
-		setItemSelection(undefined);
-	}, [selected, finalLabelGetter]);
+	const userLeftControl = useCallback(
+		() => {
+			console.log('user left control');
+			if (itemSelection) {
+				setItemSelection(undefined);
+				setSearchText(selected ? finalLabelGetter(selected) : '');
+			}
+		},
+		[onChange, itemSelection, selected, finalLabelGetter]
+	);
+
+	const startBlur = useCallback(
+		() => {
+			blurTimeout.current = window.setTimeout(userLeftControl, 100);
+		},
+		[blurTimeout, userLeftControl]
+	);
+
+	const cancelBlur = useCallback(
+		() => {
+			if (blurTimeout.current) {
+				clearTimeout(blurTimeout.current);
+			}
+		},
+		[blurTimeout]
+	);
+
+	// Clean up the timeout when the component unmounts
+	useEffect(
+		() => {
+			return cancelBlur;
+		},
+		[]
+	);
+
+	useEffect(
+		() => {
+			setSearchText(selected ? finalLabelGetter(selected) : '');
+			if (searchPromise) {
+				searchPromise.cancel();
+				setSearchPromise(undefined);
+			}
+			setItemSelection(undefined);
+		},
+		[selected]
+	);
 
 	const reset = useCallback(
 		() => {
@@ -61,21 +101,13 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 			cancellable.promise.then(setItemSelection);
 			setSearchPromise(cancellable);
 		},
-		[searchPromise]
+		[searchPromise, onSearch]
 	);
 
-	const userLeftControl = useCallback(
-		() => {
-			if (itemSelection) {
-				setItemSelection(undefined);
-				setSearchText(selected ? finalLabelGetter(selected) : '');
-			}
-		},
-		[onChange]
-	);
 
 	const userSelectedItem = useCallback(
 		(item: T) => {
+			console.log('user selected item');
 			setItemSelection(undefined);
 			onChange({...item});
 		},
@@ -83,30 +115,37 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 	);
 
 	return (
-		<Dropdown defaultShow={false} show={itemSelection !== null} onBlur={userLeftControl}>
-			<TextInputWithReset
-				disabled={disabled}
-				value={searchText}
-				onChange={userChangedText}
-				onReset={reset}
-				className={finalCss}
-			/>
-			{
-				itemSelection &&
-				<Dropdown.Menu>
-					{
-						itemSelection.map(
-							(item) => <Dropdown.Item
-								key={item.id}
-								onClick={() => userSelectedItem(item)}
-								active={item.id === selected?.id}
-							>
-								{finalLabelGetter(item)}
-							</Dropdown.Item>
-						)
-					}
-				</Dropdown.Menu>
-			}
-		</Dropdown>
+		<div onBlur={startBlur} onFocus={cancelBlur}>
+			<Dropdown defaultShow={false} show={itemSelection !== null}>
+				<TextInputWithReset
+					disabled={disabled}
+					value={searchText}
+					onChange={userChangedText}
+					onReset={reset}
+					className={finalCss}
+				/>
+				{
+					itemSelection &&
+					<Dropdown.Menu>
+						{
+							itemSelection.map(
+								(item) => <Dropdown.Item
+									key={item.id}
+									onClick={
+										(e) => {
+											cancelBlur();
+											userSelectedItem(item);
+										}
+									}
+									active={item.id === selected?.id}
+								>
+									{finalLabelGetter(item)}
+								</Dropdown.Item>
+							)
+						}
+					</Dropdown.Menu>
+				}
+			</Dropdown>
+		</div>
 	);
 }
