@@ -1,6 +1,6 @@
 {
   "name": "zavadil-react-common",
-  "version": "1.2.96",
+  "version": "1.2.98",
   "description": "Common types for React Typescript UI apps.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -32,7 +32,7 @@
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
-    "zavadil-ts-common": "^1.2.45"
+    "zavadil-ts-common": "^1.2.51"
   },
   "eslintConfig": {
     "extends": [

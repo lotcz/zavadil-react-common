@@ -1,4 +1,5 @@
 export * from './TextInputWithReset';
+export * from './DateInput';
 export * from './IconButton';
 export * from './IconSwitch';
 export * from './LoadingButton';
