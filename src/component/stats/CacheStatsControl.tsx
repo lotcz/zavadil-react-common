@@ -8,18 +8,28 @@ export type CacheStatsControlProps = {
 }
 
 export function CacheStatsControl({name, stats}: CacheStatsControlProps) {
-	const isEmpty = stats.cachedItems === 0 && stats.capacity === 0;
 	return (
-		<div className="d-flex align-items-center gap-2">
-			<pre>{name}</pre>
-			<pre>[{stats.cachedItems} / {stats.capacity}]</pre>
-			<div className="flex-grow-1">
-				<ProgressBar
-					now={stats.cachedItems}
-					min={0}
-					max={isEmpty ? 1 : stats.capacity}
-				/>
+		<div>
+			<div className="d-flex align-items-center gap-2">
+				<pre>{name}</pre>
+				<pre>
+				[
+					{stats.cachedItems}
+					{stats.capacity > 0 && ' / '}
+					{stats.capacity > 0 && stats.capacity}
+					]
+				</pre>
 			</div>
+			{
+				stats.capacity > 0 &&
+				<div className="p-1">
+					<ProgressBar
+						now={stats.cachedItems}
+						min={0}
+						max={stats.capacity}
+					/>
+				</div>
+			}
 		</div>
 	);
 }
