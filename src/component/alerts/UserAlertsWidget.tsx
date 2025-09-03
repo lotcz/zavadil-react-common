@@ -1,38 +1,63 @@
 import {UserAlert, UserAlerts, UserAlertType} from 'zavadil-ts-common';
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import UserAlertWidget from "./UserAlertWidget";
 import UserAlertTypeIcon from "./UserAlertTypeIcon";
-import {Button, Stack} from "react-bootstrap";
+import {Stack} from "react-bootstrap";
+import {IconButton} from "../forms";
+import {BsEye, BsTrash} from "react-icons/bs";
+import {VscEyeClosed} from "react-icons/vsc";
 
 export type UserAlertsWidgetProps = {
 	userAlerts: UserAlerts;
 };
 
 export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
-	const [renderedAlerts, setRenderedAlerts] = useState<UserAlert[]>([...userAlerts.alerts]);
+	const [showAll, setShowAll] = useState<boolean>(false);
+	const [totalAlerts, setTotalAlerts] = useState<number>(userAlerts.alerts.length);
+	const [renderedAlerts, setRenderedAlerts] = useState<UserAlert[]>([...userAlerts.visibleAlerts]);
 	const [summary, setSummary] = useState<Map<UserAlertType, number>>(userAlerts.getSummary());
 
-	useEffect(() => {
-		userAlerts.addOnChangeHandler(() => {
-			setRenderedAlerts([...userAlerts.alerts]);
+	const onChangeHandler = useCallback(
+		() => {
+			setTotalAlerts(userAlerts.alerts.length);
+			setRenderedAlerts(showAll ? [...userAlerts.alerts] : [...userAlerts.visibleAlerts]);
 			setSummary(userAlerts.getSummary());
-		});
-	}, [userAlerts]);
+		},
+		[userAlerts, showAll]
+	);
 
-	if (renderedAlerts.length === 0) return <></>;
+	useEffect(() => {
+			userAlerts.addOnChangeHandler(onChangeHandler);
+			const handle = setInterval(
+				() => userAlerts.updateVisibility(),
+				100
+			);
+			return () => {
+				clearInterval(handle);
+				userAlerts.removeOnChangeHandler(onChangeHandler);
+			}
+		},
+		[userAlerts, onChangeHandler]
+	);
+
+	if (totalAlerts <= 0) return <></>;
 
 	return (
 		<div className="user-alerts border rounded bg-body text-body position-fixed text-end" style={{bottom: 15, right: 15, zIndex: 2147483647}}>
 			{
+				renderedAlerts.length > 0 &&
 				<div className="max-w-50 p-2 border-bottom">
 					{
-						renderedAlerts.map((a, index) => <UserAlertWidget key={index} userAlert={a}/>)
+						renderedAlerts.map((a, index) => <UserAlertWidget key={index} userAlert={a} maxDurationMs={userAlerts.maxVisibilityMs}/>)
 					}
 				</div>
 			}
 			<div className="p-2">
 				<Stack direction="horizontal" gap={2} className="justify-content-end align-items-center">
-					<Button size="sm" variant="primary" onClick={() => userAlerts.reset()}>Clear</Button>
+					{
+						showAll ? <IconButton size="sm" variant="primary" onClick={() => setShowAll(false)} icon={<VscEyeClosed/>}>Hide</IconButton>
+							: <IconButton size="sm" variant="primary" onClick={() => setShowAll(true)} icon={<BsEye/>}>Show All</IconButton>
+					}
 					{
 						Array.from(summary.entries()).map(
 							(entry, index) => (
@@ -45,6 +70,7 @@ export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 							)
 						)
 					}
+					<IconButton size="sm" variant="danger" onClick={() => userAlerts.reset()} icon={<BsTrash/>}>Reset</IconButton>
 				</Stack>
 			</div>
 		</div>
