@@ -28,7 +28,7 @@ export function TablePlaceholder({cols, rows, size}: TablePlaceholderProps) {
 							{
 								Array.from(
 									{length: colsN},
-									(_, i) => <td>
+									(_, i) => <td key={i}>
 										<div className="w-100 p-1 m-1"></div>
 									</td>
 								)
