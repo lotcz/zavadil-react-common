@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {EntityBase, ObjectUtil} from 'zavadil-ts-common';
+import {ObjectUtil} from 'zavadil-ts-common';
 import {AdvancedTable, AdvancedTableProps} from "./AdvancedTable";
 import {RenderFunc, SelectableTableHeader, TableHeader} from "./TableTypes";
 import {BsCheckAll} from "react-icons/bs";
 import IconCheck from "../forms/IconCheck";
 
-export type SelectableItem<T extends EntityBase> = {
+export type SelectableItem<T> = {
 	selected: boolean;
 	item: T;
 };
 
-export type TableWithSelectProps<T extends EntityBase> = Omit<AdvancedTableProps, 'header'> & {
+export type TableWithSelectProps<T> = Omit<AdvancedTableProps, 'header'> & {
 	showSelect?: boolean;
 	header: SelectableTableHeader<T>;
 	items?: Array<T>;
@@ -22,7 +22,7 @@ function createRenderer<T>(name: string): RenderFunc<T> {
 	return (e: T) => ObjectUtil.getNestedValue(e, name);
 }
 
-export function TableWithSelect<T extends EntityBase>({
+export function TableWithSelect<T>({
 	showSelect,
 	header,
 	items,

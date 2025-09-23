@@ -28,6 +28,8 @@ export type AdvancedTableProps = {
 	paging: PagingRequest;
 	totalItems: number;
 	hover?: boolean;
+	showPagingOnBottom?: boolean;
+	showPageSizeSelection?: boolean;
 	striped?: boolean;
 	bordered?: boolean;
 	onPagingChanged: (p: PagingRequest) => any
@@ -35,6 +37,8 @@ export type AdvancedTableProps = {
 
 export function AdvancedTable({
 	hover,
+	showPagingOnBottom,
+	showPageSizeSelection,
 	striped,
 	bordered,
 	header,
@@ -82,7 +86,9 @@ export function AdvancedTable({
 					<td colSpan={header.length}>
 						<div className="d-flex justify-content-between align-items-center gap-2">
 							<div><Localize text='Page'/>: {paging.page + 1} / {totalPages}</div>
-							<TablePagination paging={paging} totalItems={totalItems} onPagingChanged={onPagingChanged}/>
+							{
+								totalPages > 0 && <TablePagination paging={paging} totalItems={totalItems} onPagingChanged={onPagingChanged}/>
+							}
 							<div><Localize text='Total items'/>: {totalItems}</div>
 						</div>
 					</td>
@@ -117,37 +123,47 @@ export function AdvancedTable({
 				<tbody>
 				{children}
 				</tbody>
-				<tfoot>
-				<tr>
-					<td colSpan={header.length}>
-						<div className="d-flex justify-content-between align-items-center gap-2">
-							<div><Localize text='Page'/>: {paging.page + 1} / {totalPages}</div>
-							<TablePagination paging={paging} totalItems={totalItems} onPagingChanged={onPagingChanged}/>
-							<div><Localize text='Total items'/>: {totalItems}</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td colSpan={header.length}>
-						<div className="d-flex align-items-center gap-2 justify-content-end">
-							<div className="text-nowrap"><Localize text='Page size'/>:</div>
-							<div>
-								<NumberSelect
-									value={paging.size}
-									options={sizes}
-									onChange={
-										(e) => {
-											paging.size = e || 10
-											onPagingChanged({...paging});
-										}
+				{
+					totalItems > 0 && <tfoot>
+					{
+						showPagingOnBottom &&
+						<tr>
+							<td colSpan={header.length}>
+								<div className="d-flex justify-content-between align-items-center gap-2">
+									<div><Localize text='Page'/>: {paging.page + 1} / {totalPages}</div>
+									{
+										totalPages > 0 && <TablePagination paging={paging} totalItems={totalItems} onPagingChanged={onPagingChanged}/>
 									}
-									showEmptyOption={false}
-								/>
-							</div>
-						</div>
-					</td>
-				</tr>
-				</tfoot>
+									<div><Localize text='Total items'/>: {totalItems}</div>
+								</div>
+							</td>
+						</tr>
+					}
+					{
+						showPageSizeSelection &&
+						<tr>
+							<td colSpan={header.length}>
+								<div className="d-flex align-items-center gap-2 justify-content-end">
+									<div className="text-nowrap"><Localize text='Page size'/>:</div>
+									<div>
+										<NumberSelect
+											value={paging.size}
+											options={sizes}
+											onChange={
+												(e) => {
+													paging.size = e || 10
+													onPagingChanged({...paging});
+												}
+											}
+											showEmptyOption={false}
+										/>
+									</div>
+								</div>
+							</td>
+						</tr>
+					}
+					</tfoot>
+				}
 			</Table>
 		</div>
 	);
