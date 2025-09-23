@@ -5,7 +5,7 @@ import {ButtonVariant} from "react-bootstrap/types";
 export type IconButtonProps = {
 	disabled?: boolean;
 	onClick: () => any;
-	size?: "sm";
+	size?: "sm" | "lg";
 	icon?: ReactNode;
 	variant?: ButtonVariant;
 };
