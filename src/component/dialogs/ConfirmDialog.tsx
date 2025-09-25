@@ -1,6 +1,7 @@
 import {Button, Modal, Stack} from "react-bootstrap";
 import {BasicDialogProps} from "./DialogProps";
 import {createContext} from "react";
+import {Localize} from "../localization";
 
 export class ConfirmDialogContextData {
 	setProps: (props?: ConfirmDialogProps) => any;
@@ -32,13 +33,13 @@ export type ConfirmDialogProps = BasicDialogProps & {
 
 export function ConfirmDialog({name, text, onClose, onConfirm}: ConfirmDialogProps) {
 	return (
-		<Modal show={true}>
+		<Modal show={true} backdrop={true} onHide={onClose}>
 			<Modal.Header>{name || 'Confirm'}</Modal.Header>
 			<Modal.Body>{text}</Modal.Body>
 			<Modal.Footer>
 				<Stack direction="horizontal">
-					<Button variant="link" onClick={onClose}>Zpět</Button>
-					<Button variant="primary" onClick={onConfirm}>Ano</Button>
+					<Button variant="link" onClick={onClose}><Localize text="Back"/></Button>
+					<Button variant="primary" onClick={onConfirm}><Localize text="Yes"/></Button>
 				</Stack>
 			</Modal.Footer>
 		</Modal>

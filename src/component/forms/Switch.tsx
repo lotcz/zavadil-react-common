@@ -7,9 +7,10 @@ export type SwitchProps = {
 	checked: boolean;
 	onChange: (checked: boolean) => any;
 	size?: number;
+	label?: string | React.ReactNode;
 };
 
-export function Switch({id, disabled, checked, size, onChange}: SwitchProps) {
+export function Switch({id, label, disabled, checked, size, onChange}: SwitchProps) {
 	return (
 		<Form.Switch
 			disabled={disabled}
@@ -19,6 +20,7 @@ export function Switch({id, disabled, checked, size, onChange}: SwitchProps) {
 			checked={checked}
 			onChange={(e) => onChange(!checked)}
 			className="cursor-pointer"
+			label={label}
 		/>
 	);
 }
