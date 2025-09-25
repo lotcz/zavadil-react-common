@@ -6,10 +6,11 @@ export type ActiveButtonProps = IconButtonProps & {
 	loading?: boolean;
 };
 
-export function LoadingButton({disabled, icon, loading, children, size, onClick}: PropsWithChildren<ActiveButtonProps>) {
+export function LoadingButton({disabled, icon, loading, children, size, variant, onClick}: PropsWithChildren<ActiveButtonProps>) {
 	return (
-		(loading === true) ? <IconButton disabled={true} onClick={onClick} size={size} icon={<Spinner size="sm"/>}>{children}</IconButton>
-			: <IconButton disabled={disabled} onClick={onClick} icon={icon} size={size}>{children}</IconButton>
+		(loading === true) ?
+			<IconButton disabled={true} onClick={onClick} size={size} variant={variant} icon={<Spinner size="sm"/>}>{children}</IconButton>
+			: <IconButton disabled={disabled} onClick={onClick} icon={icon} size={size} variant={variant}>{children}</IconButton>
 	);
 }
 

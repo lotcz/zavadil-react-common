@@ -5,6 +5,7 @@ export * from './IconButton';
 export * from './IconSwitch';
 export * from './LoadingButton';
 export * from './SaveButton';
+export * from './DeleteButton';
 export * from './LookupSelect';
 export * from './NumberSelect';
 export * from './StringSelect';
