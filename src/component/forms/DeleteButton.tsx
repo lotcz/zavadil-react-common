@@ -25,5 +25,3 @@ export function DeleteButton({disabled, icon, loading, children, size, onClick, 
 		</LoadingButton>
 	);
 }
-
-export default DeleteButton;

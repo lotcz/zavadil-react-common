@@ -24,5 +24,3 @@ export function Switch({id, label, disabled, checked, size, onChange}: SwitchPro
 		/>
 	);
 }
-
-export default Switch;

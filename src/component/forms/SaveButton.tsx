@@ -11,6 +11,7 @@ export function SaveButton({disabled, icon, loading, children, size, onClick, is
 		() => icon ? icon : <FaFloppyDisk/>,
 		[icon]
 	);
+
 	const content = useMemo(
 		() => isChanged ? <strong>{children}</strong> : children,
 		[isChanged, children]
@@ -28,5 +29,3 @@ export function SaveButton({disabled, icon, loading, children, size, onClick, is
 		</LoadingButton>
 	);
 }
-
-export default SaveButton;
