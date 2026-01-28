@@ -16,3 +16,7 @@ export * from './AutocompleteEntitySelect';
 export * from './AutocompleteEntityIdSelect';
 export * from './AutocompleteLookupSelect';
 export * from './AutocompleteLookupIdSelect';
+export * from './EntitySelect';
+export * from './EntityIdSelect';
+export * from './EntityWithNameSelect';
+export * from './EntityWithNameIdSelect';
