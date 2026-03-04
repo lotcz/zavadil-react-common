@@ -1,5 +1,6 @@
 import {Form, Spinner} from "react-bootstrap";
 import {StringUtil} from "zavadil-ts-common";
+import {useEffect} from "react";
 
 export type GenericSelectOption<T> = {
 	id?: T | null;
@@ -18,10 +19,16 @@ export type GenericSelectProps<T> = {
 export type StringSelectProps = GenericSelectProps<string>;
 
 export function StringSelect({value, options, disabled, onChange, showEmptyOption, emptyOptionLabel}: StringSelectProps) {
-	if (StringUtil.isEmpty(value) && options.length > 0 && showEmptyOption !== true) {
-		onChange(options[0].id);
-		return <span>{value} - selecting default {options[0].id}</span>;
-	}
+	useEffect(
+		() => {
+			if (StringUtil.isBlank(value)) {
+				if (options.length > 0 && showEmptyOption !== true) {
+					onChange(options[0].id);
+				}
+			}
+		},
+		[value, options, showEmptyOption, onChange]
+	);
 
 	return (
 		<Form.Select
