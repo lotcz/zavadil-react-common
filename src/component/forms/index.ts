@@ -1,4 +1,5 @@
 export * from "./FormRow";
+export * from "./FormRowControl";
 export * from "./TextInputWithReset";
 export * from "./DateInput";
 export * from "./DateTimeInput";
