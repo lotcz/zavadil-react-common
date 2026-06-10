@@ -33,7 +33,6 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 
 	const userLeftControl = useCallback(
 		() => {
-			console.log('user left control');
 			if (itemSelection) {
 				setItemSelection(undefined);
 				setSearchText(selected ? finalLabelGetter(selected) : '');
@@ -107,7 +106,6 @@ export function AutocompleteSelect<T extends EntityBase>({selected, disabled, la
 
 	const userSelectedItem = useCallback(
 		(item: T) => {
-			console.log('user selected item');
 			setItemSelection(undefined);
 			onChange({...item});
 		},
