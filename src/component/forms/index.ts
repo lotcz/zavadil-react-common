@@ -22,3 +22,4 @@ export * from "./EntitySelect";
 export * from "./EntityIdSelect";
 export * from "./EntityWithNameSelect";
 export * from "./EntityWithNameIdSelect";
+export * from "./TextToClipboard";

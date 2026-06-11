@@ -6,6 +6,7 @@ import {Stack} from "react-bootstrap";
 import {IconButton} from "../forms";
 import {BsEye, BsTrash} from "react-icons/bs";
 import {VscEyeClosed} from "react-icons/vsc";
+import Localize from "../localization/Localize";
 
 export type UserAlertsWidgetProps = {
 	userAlerts: UserAlerts;
@@ -55,8 +56,10 @@ export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 			<div className="p-2">
 				<Stack direction="horizontal" gap={2} className="justify-content-end align-items-center">
 					{
-						showAll ? <IconButton size="sm" variant="primary" onClick={() => setShowAll(false)} icon={<VscEyeClosed/>}>Hide</IconButton>
-							: <IconButton size="sm" variant="primary" onClick={() => setShowAll(true)} icon={<BsEye/>}>Show All</IconButton>
+						showAll ? <IconButton size="sm" variant="primary" onClick={() => setShowAll(false)} icon={<VscEyeClosed/>}><Localize
+								text="Hide"/></IconButton>
+							: <IconButton size="sm" variant="primary" onClick={() => setShowAll(true)} icon={<BsEye/>}><Localize
+								text="Show All"/></IconButton>
 					}
 					{
 						Array.from(summary.entries()).map(
@@ -70,7 +73,9 @@ export function UserAlertsWidget({userAlerts}: UserAlertsWidgetProps) {
 							)
 						)
 					}
-					<IconButton size="sm" variant="danger" onClick={() => userAlerts.reset()} icon={<BsTrash/>}>Reset</IconButton>
+					<IconButton size="sm" variant="danger" onClick={() => userAlerts.reset()} icon={<BsTrash/>}>
+						<Localize text="Reset"/>
+					</IconButton>
 				</Stack>
 			</div>
 		</div>
