@@ -8,7 +8,7 @@ export type NamedEntityCheckboxGroupProps = {
 	onChange(selectedIds: Array<number>): any;
 }
 
-export default function NamedEntityCheckboxGroup({selectedIds, items, onChange}: NamedEntityCheckboxGroupProps) {
+export function NamedEntityCheckboxGroup({selectedIds, items, onChange}: NamedEntityCheckboxGroupProps) {
 
 	const labelGetter = useCallback(
 		// @ts-ignore
@@ -20,3 +20,5 @@ export default function NamedEntityCheckboxGroup({selectedIds, items, onChange}:
 		<EntityCheckboxGroup selectedIds={selectedIds} items={items} labelGetter={labelGetter} onChange={onChange}/>
 	);
 }
+
+export default NamedEntityCheckboxGroup;

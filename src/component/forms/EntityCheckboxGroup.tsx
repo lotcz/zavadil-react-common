@@ -9,7 +9,7 @@ export type EntityCheckboxGroupProps = {
 	onChange(selectedIds: Array<number>): any;
 }
 
-export default function EntityCheckboxGroup({selectedIds, items, labelGetter, onChange}: EntityCheckboxGroupProps) {
+export function EntityCheckboxGroup({selectedIds, items, labelGetter, onChange}: EntityCheckboxGroupProps) {
 
 	const itemsArray = useMemo(
 		() => {
@@ -24,3 +24,5 @@ export default function EntityCheckboxGroup({selectedIds, items, labelGetter, on
 		<CheckboxGroup selectedValues={selectedIds} items={itemsArray} onChange={onChange}/>
 	);
 }
+
+export default EntityCheckboxGroup;

@@ -8,7 +8,7 @@ export type CheckboxGroupProps = {
 	onChange(selectedValues: Array<any>): any;
 }
 
-export default function CheckboxGroup({selectedValues, items, onChange}: CheckboxGroupProps) {
+export function CheckboxGroup({selectedValues, items, onChange}: CheckboxGroupProps) {
 
 	const isSelected = useCallback((value: any) => selectedValues.includes(value), [selectedValues]);
 
@@ -35,3 +35,5 @@ export default function CheckboxGroup({selectedValues, items, onChange}: Checkbo
 		</Stack>
 	);
 }
+
+export default CheckboxGroup;
