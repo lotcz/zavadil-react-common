@@ -23,3 +23,6 @@ export * from "./EntityIdSelect";
 export * from "./EntityWithNameSelect";
 export * from "./EntityWithNameIdSelect";
 export * from "./TextToClipboard";
+export * from "./CheckboxGroup";
+export * from "./EntityCheckboxGroup";
+export * from "./NamedEntityCheckboxGroup";
