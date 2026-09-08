@@ -1,5 +1,5 @@
 import {Button, Form, Modal, ModalBody, ModalHeader, Stack} from "react-bootstrap";
-import {FormEvent, useCallback, useMemo, useState} from "react";
+import {createContext, FormEvent, useCallback, useMemo, useState} from "react";
 import {StringUtil} from "zavadil-ts-common";
 import {BasicDialogProps} from "./DialogProps";
 import {FormRowControl} from "../forms";
@@ -81,3 +81,15 @@ export function ChangePasswordDialog({onClose, onConfirm, name, text}: ChangePas
 }
 
 export default ChangePasswordDialog;
+
+export type ChangePasswordDialogContextContent = {
+	show: (props: ChangePasswordDialogProps) => any;
+	hide: () => any;
+};
+
+export const ChangePasswordDialogContext = createContext<ChangePasswordDialogContextContent>(
+	{
+		show: (props) => null,
+		hide: () => null
+	}
+);

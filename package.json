@@ -1,6 +1,6 @@
 {
   "name": "zavadil-react-common",
-  "version": "2.2.13",
+  "version": "2.2.14",
   "description": "Common types for React Typescript UI apps.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
