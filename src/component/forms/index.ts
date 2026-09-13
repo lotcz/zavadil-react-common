@@ -1,6 +1,5 @@
 export * from "./FormRow";
 export * from "./FormRowControl";
-export * from "./TextInputWithReset";
 export * from "./DateInput";
 export * from "./DateTimeInput";
 export * from "./IconButton";
@@ -22,6 +21,8 @@ export * from "./EntitySelect";
 export * from "./EntityIdSelect";
 export * from "./EntityWithNameSelect";
 export * from "./EntityWithNameIdSelect";
+export * from "./TextInput";
+export * from "./TextInputWithReset";
 export * from "./TextToClipboard";
 export * from "./CheckboxGroup";
 export * from "./EntityCheckboxGroup";

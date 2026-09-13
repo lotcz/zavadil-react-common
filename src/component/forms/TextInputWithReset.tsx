@@ -2,25 +2,17 @@ import {StringUtil} from 'zavadil-ts-common';
 import {Button, Form, InputGroup} from "react-bootstrap";
 import {BsXCircle} from "react-icons/bs";
 import {useCallback, useMemo} from "react";
+import {TextInputProps} from "./TextInput";
 
-export type TextInputWithResetProps = {
-	value?: string | null;
-	onChange: (s: string) => any;
+export type TextInputWithResetProps = TextInputProps & {
 	onReset?: () => any;
-	disabled?: boolean;
-	onBlur?: () => any;
-	className?: string;
 };
 
 export function TextInputWithReset({value, onChange, onReset, onBlur, disabled, className}: TextInputWithResetProps) {
-	const actual = useMemo(
-		() => StringUtil.getNonEmpty(value),
-		[value]
-	);
 
 	const isEmpty = useMemo(
 		() => StringUtil.isBlank(value),
-		[actual]
+		[value]
 	);
 
 	const reset = useCallback(
@@ -39,7 +31,7 @@ export function TextInputWithReset({value, onChange, onReset, onBlur, disabled, 
 			<Form.Control
 				type="text"
 				disabled={disabled}
-				value={actual}
+				value={StringUtil.toString(value)}
 				onChange={(e) => onChange(e.target.value)}
 				onBlur={onBlur}
 			/>

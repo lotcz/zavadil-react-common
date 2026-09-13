@@ -26,6 +26,7 @@ export function CheckboxGroup({selectedValues, items, onChange}: CheckboxGroupPr
 			{
 				itemsArray.map(
 					(item, index) => <Switch
+						key={index}
 						checked={isSelected(item[0])}
 						onChange={() => handleChange(item[0])}
 						label={item[1]}
